@@ -1,0 +1,44 @@
+services:
+  db:
+    container_name: my_funds-postgresql
+    image: postgres:13
+    env_file:
+      - ./vars/psql.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      expense_tracker:
+        aliases:
+          - postgresql
+
+  web:
+    container_name: my_funds-webapp
+    env_file:
+      - ./vars/django.env
+    build:
+      context: .
+      dockerfile: ./expense_tracker/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+    networks:
+      expense_tracker:
+        aliases:
+          - webapp
+
+volumes:
+  postgres_data: {}
+networks:
+  expense_tracker: {}
