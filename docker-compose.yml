@@ -37,6 +37,26 @@ services:
       expense_tracker:
         aliases:
           - webapp
+  
+  front:
+    container_name: my_funds-front
+    env_file:
+      - ./vars/react.env
+    build:
+      context: .
+      dockerfile: ./my-funds-frontend/Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      web:
+        condition: service_started
+    links:
+      - db
+      - web
+    networks:
+      expense_tracker:
+        aliases:
+          - front
 
 volumes:
   postgres_data: {}

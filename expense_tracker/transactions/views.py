@@ -61,3 +61,10 @@ def get_categories(request):
         for category in categories
     ]
     return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def create_category(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        category = Category.objects.create(name=data['name'])
+        return JsonResponse({'id': category.id, 'name': category.name}, status=201)
