@@ -51,7 +51,6 @@ services:
       web:
         condition: service_started
     links:
-      - db
       - web
     networks:
       expense_tracker:
