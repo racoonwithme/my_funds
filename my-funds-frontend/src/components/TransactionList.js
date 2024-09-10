@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getTransactions } from '../api';
 
-const TransactionList = () => {
+const TransactionList = ({ refresh }) => {
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
@@ -10,7 +10,7 @@ const TransactionList = () => {
             setTransactions(data);
         };
         fetchTransactions();
-    }, []);
+    }, [refresh]);
 
     return (
         <div>

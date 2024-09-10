@@ -4,7 +4,7 @@ import { createTransaction, getCategories } from '../api';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const TransactionForm = () => {
+const TransactionForm = ({ onTransactionAdded }) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [newCategoryName, setNewCategoryName] = useState('');
@@ -33,6 +33,7 @@ const TransactionForm = () => {
             date,
         };
         await createTransaction(transaction);
+        onTransactionAdded();  // Обновление списка транзакций
         setSelectedCategory(null);
         setAmount('');
         setComment('');
@@ -42,7 +43,6 @@ const TransactionForm = () => {
 
     const handleCreateCategory = async () => {
         if (newCategoryName) {
-            // Отправка POST-запроса на создание новой категории
             const response = await fetch(`${API_URL}categories/create/`, {
                 method: 'POST',
                 headers: {

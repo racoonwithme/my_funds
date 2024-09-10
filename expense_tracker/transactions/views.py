@@ -68,3 +68,13 @@ def create_category(request):
         data = json.loads(request.body)
         category = Category.objects.create(name=data['name'])
         return JsonResponse({'id': category.id, 'name': category.name}, status=201)
+    
+@csrf_exempt
+def delete_category(request, category_id):
+    if request.method == 'DELETE':
+        try:
+            category = Category.objects.get(id=category_id)
+            category.delete()
+            return JsonResponse({'message': 'Category deleted successfully'}, status=204)
+        except Category.DoesNotExist:
+            return JsonResponse({'error': 'Category not found'}, status=404)
