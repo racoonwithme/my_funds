@@ -18,6 +18,6 @@ export const getCategories = async () => {
 };
 
 export const createCategories = async () => {
-    const response = await axios.get(`${API_URL}categories/create`);
+    const response = await axios.get(`${API_URL}categories/create/`);
     return response.data;
 };

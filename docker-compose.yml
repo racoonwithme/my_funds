@@ -40,8 +40,6 @@ services:
   
   front:
     container_name: my_funds-front
-    env_file:
-      - ./vars/react.env
     build:
       context: .
       dockerfile: ./my-funds-frontend/Dockerfile
